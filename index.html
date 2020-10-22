@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Toddle</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://use.fontawesome.com/releases/v5.5.0/css/all.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.js"></script>
+</head>
+<div class="container" style="margin-top:10%;">
+	<label style="color:red">MATHEMATICS</label>
+	<div id="myList" style="border-top:1px solid black;">
+		<div class="row">
+			<div class="col-lg-3 col-sm-3" ><label>Action</label><br><p style="color:rgb(150,150,150);">Move,Indent <br>Outdent,Delete</p></div>
+			<div class="col-lg-9 col-sm-9"><label >Standard</label><br><p style="color:rgb(150,150,150);">The text of the standard</p></div> 
+		</div>
+	<hr>
+	</div>
+    <button class="btn btn-primary btn-lg btn-block" onclick="addList()" style="margin-top:20px;"><i class="fas fa-plus" style="margin-right:5px;"></i>Add a standard</button>
+</div>
+<script>
+var count=0;
+function remove(e)
+{
+	
+	var temp=document.getElementById("R"+e.id);
+	var attr=temp.getAttribute("style");
+	var res=attr.split(":");
+	var current_value=parseInt(res[1]);
+	var id=e.id;
+	var del_node=document.getElementById("CHP"+e.id);
+	del_node.parentNode.removeChild(del_node);
+	var next_value;
+	while(id<=count)
+    {
+		id++;
+		temp=document.getElementById("R"+id);
+		if(temp!=null)  {   
+			attr=temp.getAttribute("style");
+			res=attr.split(":");
+			next_value=parseInt(res[1]);
+			if(current_value<next_value){
+				del_node=document.getElementById("CHP"+id);
+				del_node.parentNode.removeChild(del_node);
+			}
+			else
+				break;
+		}
+	}
+}
+function left(e)
+{
+	var temp=document.getElementById("R"+e.id);
+	var attr=temp.getAttribute("style");
+	var res=attr.split(":");
+	var integer=parseInt(res[1]);
+	integer-=30;
+	if(integer>=0)
+		temp.setAttribute("style","margin-left:"+integer+"px;border:0px;border-left:30px solid rgb(200,200,200);");
+}
+function right(e)
+{
+	var temp=document.getElementById("R"+e.id);
+	var attr=temp.getAttribute("style");
+	var res=attr.split(":");
+	var integer=parseInt(res[1]);
+	integer+=30;
+	temp.setAttribute("style","margin-left:"+integer+"px;border:0px;border-left:30px solid rgb(200,200,200);");
+} 
+function up(e)
+{
+ 
+	var id=e.id;
+	id--;
+	while(document.getElementById(id)==null && id>=0)
+		id--;
+	if(id>=0){
+		var temp=document.getElementById("R"+e.id).value;
+
+		document.getElementById("R"+e.id).value=document.getElementById("R"+id).value;
+		document.getElementById("R"+id).value=temp;
+	}
+ 
+}
+function down(e)
+{
+ 
+	var id=e.id;
+	id++;
+	while(document.getElementById(id)==null && id<=count)
+		id++;
+	if(id<=count){
+		var temp=document.getElementById("R"+e.id).value;
+		document.getElementById("R"+e.id).value=document.getElementById("R"+id).value;
+		document.getElementById("R"+id).value=temp;
+	}
+
+}
+
+function addList() {
+
+	//create element
+	var node = document.createElement("div");
+	var up = document.createElement("button");
+	var down = document.createElement("button");
+	var left = document.createElement("button");
+	var right = document.createElement("button");
+	var del = document.createElement("button");
+	var std= document.createElement("input");
+	var td1=document.createElement("div");
+	var td2=document.createElement("div");
+	var block=document.createElement("div");
+	var i_up=document.createElement("i");
+	var i_down=document.createElement("i");
+	var i_left=document.createElement("i");
+	var i_right=document.createElement("i");
+	var i_del=document.createElement("i");
+  
+ 
+	// assign id to them 
+	node.setAttribute("id","CHP"+count);
+	del.setAttribute("id",count);
+	left.setAttribute("id",count);
+	std.setAttribute("id","R"+count);
+	up.setAttribute("id",count);
+	down.setAttribute("id",count);
+	right.setAttribute("id",count);
+	std.setAttribute("id","R"+count);
+	node.setAttribute("id","CHP"+count);
+	
+	
+	//assign onclick method
+	del.setAttribute("onclick", "remove(this)"); 
+	del.setAttribute("onclick", "remove(this)");
+	up.setAttribute("onclick","up(this)");
+	down.setAttribute("onclick","down(this)");   
+	right.setAttribute("onclick", "right(this)");
+	left.setAttribute("onclick", "left(this)");
+	left.setAttribute("onclick", "left(this)");
+	
+	
+	//assign class to them
+	node.setAttribute("class","row");
+	td1.setAttribute("class","col-lg-3 col-sm-3");
+	td2.setAttribute("class","col-lg-9 col-sm-9");
+	i_up.setAttribute("class","fas fa-arrow-up");
+	i_down.setAttribute("class","fas fa-arrow-down");
+	i_left.setAttribute("class","fas fa-arrow-left");
+	i_right.setAttribute("class","fas fa-arrow-right");
+	i_del.setAttribute("class","fas fa-trash-alt");
+	
+	
+	//add some style
+	block.setAttribute("style","background-color: lightblue;width:20%;");;
+	node.setAttribute("style","margin-top:5px;border-bottom:1px solid rgb(200,200,200);padding-bottom:5px;");
+	right.setAttribute("style", "margin-right:0px;");
+	left.setAttribute("style", "margin-right:0px;");
+	std.setAttribute("style","margin-left:0px;border:1px solid white;border-left:30px solid rgb(200,200,200);width:100%");
+	up.setAttribute("style","background-color:white;border:0px solid ;")
+	down.setAttribute("style","background-color:white;border:0px solid ;")
+	left.setAttribute("style","background-color:white;border:0px solid ;")
+	right.setAttribute("style","background-color:white;border:0px solid ;")
+	del.setAttribute("style","background-color:white;border:0px solid ;")
+	
+	//placeholder add
+	std.setAttribute("placeholder","Add Standard");
+	
+	
+	//append child
+	up.appendChild(i_up);
+	down.appendChild(i_down);
+	left.appendChild(i_left);
+	right.appendChild(i_right);
+	del.appendChild(i_del);
+	td1.appendChild(up);
+	td1.appendChild(down);
+	td1.appendChild(left);
+	td1.appendChild(right);
+	td1.appendChild(del);
+	td2.appendChild(block);
+	td2.appendChild(std);
+	node.appendChild(td1);
+	node.appendChild(td2);
+    document.getElementById("myList").appendChild(node);
+	//globle counter incremented
+	count++;
+}
+</script>
+</body>
+</html>
